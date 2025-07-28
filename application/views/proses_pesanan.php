@@ -1,29 +1,15 @@
-<div class="container-fluid">
-    <div class="alert alert-success">
-        <p class="text-center align-middle">
-            Selamat, Pesanan Anda telah berhasil diproses!
-        </p>
-    </div>
+<div class="container mt-4">
+    <h3>Pesanan berhasil!</h3>
+    <p>Silakan unggah bukti pembayaran agar pesanan segera diproses.</p>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h5 class="m-0 font-weight-bold text-primary">Upload Bukti Pembayaran</h5>
-        </div>
-        <div class="card-body">
-            <?php if ($this->session->flashdata('upload_error')): ?>
-                <div class="alert alert-danger"><?= $this->session->flashdata('upload_error') ?></div>
-            <?php elseif ($this->session->flashdata('upload_success')): ?>
-                <div class="alert alert-success"><?= $this->session->flashdata('upload_success') ?></div>
-            <?php endif; ?>
+    <form method="post" action="<?= base_url('dashboard/upload_bukti') ?>" enctype="multipart/form-data">
+        <input type="hidden" name="invoice_id" value="<?= $invoice_id ?>">
 
-            <form action="<?= base_url('dashboard/upload_bukti') ?>" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="bukti">Upload Bukti Pembayaran (jpg/jpeg/png)</label>
-                    <input type="file" name="bukti" class="form-control" required>
-                </div>
-                <input type="hidden" name="invoice_id" value="<?= isset($invoice_id) ? $invoice_id : '' ?>">
-                <button type="submit" class="btn btn-success">Kirim Bukti</button>
-            </form>
+        <div class="form-group">
+            <label for="bukti">Upload Bukti Pembayaran (jpg/png)</label>
+            <input type="file" name="bukti" class="form-control" required>
         </div>
-    </div>
+
+        <button type="submit" class="btn btn-success mt-2">Upload</button>
+    </form>
 </div>

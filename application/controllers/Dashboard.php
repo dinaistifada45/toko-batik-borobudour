@@ -61,13 +61,19 @@ class Dashboard extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-   public function proses_pesanan()
+public function proses_pesanan()
 {
-    $id_invoice = $this->model_invoice->index(); // terima id_invoice dari model
+    $id_invoice = $this->model_invoice->index();
 
     if ($id_invoice) {
-        $this->cart->destroy(); // kosongkan keranjang
-        redirect('dashboard/invoice/' . $id_invoice); // arahkan ke halaman invoice
+        $this->cart->destroy();
+
+        $data['id_invoice'] = $id_invoice;
+
+        $this->load->view('templates/header');
+        $this->load->view('templates/sidebar');
+        $this->load->view('proses_pesanan', $data); // tampilkan view konfirmasi
+        $this->load->view('templates/footer');
     } else {
         echo "Maaf, pesanan Anda gagal diproses!";
     }
@@ -84,34 +90,47 @@ class Dashboard extends CI_Controller
     }
 
     public function upload_bukti()
-    {
-        $invoice_id = $this->input->post('invoice_id');
-        $config['upload_path']   = './uploads/';
-        $config['allowed_types'] = 'jpg|jpeg|png';
-        $config['max_size']      = 2048;
-
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('bukti')) {
-            $this->session->set_flashdata('upload_error', $this->upload->display_errors());
-        } else {
-            $upload_data = $this->upload->data();
-            $file_name = $upload_data['file_name'];
-
-            $this->model_invoice->update_bukti($invoice_id, $file_name);
-            $this->session->set_flashdata('upload_success', 'Bukti pembayaran berhasil diupload.');
-        }
-
-        redirect('dashboard/invoice/' . $invoice_id);
+{
+    $invoice_id = $this->input->post('invoice_id');
+    if (!$invoice_id) {
+        show_error('ID invoice tidak ditemukan.', 404);
+        return;
     }
 
-    public function invoice($id_invoice)
-    {
-        $data['invoice'] = $this->model_invoice->ambil_id_invoice($id_invoice);
-        $data['pesanan'] = $this->model_invoice->ambil_id_pesanan($id_invoice);
-        $this->load->view('templates/header');
-        $this->load->view('templates/sidebar');
-        $this->load->view('invoice', $data);
-        $this->load->view('templates/footer');
+    $config['upload_path']   = './uploads/';
+    $config['allowed_types'] = 'jpg|jpeg|png';
+    $config['max_size']      = 2048;
+
+    $this->load->library('upload', $config);
+
+    if (!$this->upload->do_upload('bukti')) {
+        $this->session->set_flashdata('upload_error', $this->upload->display_errors());
+    } else {
+        $upload_data = $this->upload->data();
+        $file_name = $upload_data['file_name'];
+
+        $this->model_invoice->update_bukti($invoice_id, $file_name);
+        $this->session->set_flashdata('upload_success', 'Bukti pembayaran berhasil diupload.');
     }
+
+    redirect('dashboard/invoice/' . $invoice_id);
+}
+
+
+    public function invoice($id_invoice = null)
+{
+    if (!$id_invoice) {
+        show_error('ID invoice tidak diberikan!', 404);
+        return;
+    }
+
+    $data['invoice'] = $this->model_invoice->ambil_id_invoice($id_invoice);
+    $data['pesanan'] = $this->model_invoice->ambil_id_pesanan($id_invoice);
+    
+    $this->load->view('templates/header');
+    $this->load->view('templates/sidebar');
+    $this->load->view('invoice', $data);
+    $this->load->view('templates/footer');
+}
+
 }
