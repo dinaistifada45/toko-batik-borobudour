@@ -65,4 +65,17 @@ class Model_invoice extends CI_Model
         $this->db->where('id', $id_invoice);
         $this->db->update('tb_invoice', ['bukti_pembayaran' => $file_name]);
     }
+
+    public function konfirmasi_pembayaran($id_invoice)
+{
+    $this->db->where('id', $id_invoice);
+    $this->db->update('tb_invoice', ['status_pembayaran' => 'Dikonfirmasi']);
+}
+
+public function ubah_status_pengiriman($id_invoice, $status)
+{
+    $this->db->where('id', $id_invoice);
+    $this->db->update('tb_invoice', ['status_pengiriman' => $status]);
+}
+
 }
