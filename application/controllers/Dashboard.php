@@ -68,32 +68,24 @@ public function proses_pesanan()
     if ($id_invoice) {
         $this->cart->destroy();
 
-        $data['id_invoice'] = $id_invoice;
+        // Kirim data id_invoice ke view
+        $data['invoice_id'] = $id_invoice;
 
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
-        $this->load->view('proses_pesanan', $data); // tampilkan view konfirmasi
+        $this->load->view('proses_pesanan', $data); // ✅ kirim data ke view
         $this->load->view('templates/footer');
     } else {
         echo "Maaf, pesanan Anda gagal diproses!";
     }
 }
 
-
-    public function detail($id_brg)
-    {
-        $data['barang'] = $this->model_barang->detail_brg($id_brg);
-        $this->load->view('templates/header');
-        $this->load->view('templates/sidebar');
-        $this->load->view('detail_barang', $data);
-        $this->load->view('templates/footer');
-    }
-
-    public function upload_bukti()
+public function upload_bukti()
 {
     $invoice_id = $this->input->post('invoice_id');
+    
     if (!$invoice_id) {
-        show_error('ID invoice tidak ditemukan.', 404);
+        show_error("ID invoice tidak ditemukan!", 404);
         return;
     }
 
@@ -113,8 +105,20 @@ public function proses_pesanan()
         $this->session->set_flashdata('upload_success', 'Bukti pembayaran berhasil diupload.');
     }
 
+    // ✅ redirect ke detail invoice
     redirect('dashboard/invoice/' . $invoice_id);
 }
+
+
+
+    public function detail($id_brg)
+    {
+        $data['barang'] = $this->model_barang->detail_brg($id_brg);
+        $this->load->view('templates/header');
+        $this->load->view('templates/sidebar');
+        $this->load->view('detail_barang', $data);
+        $this->load->view('templates/footer');
+    }
 
 
     public function invoice($id_invoice = null)
