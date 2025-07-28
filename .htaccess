@@ -1,8 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
-    # Ganti sesuai nama folder project kamu
-    RewriteBase /Toko_Batik_Borobudour/
+    RewriteBase /Toko-Batik-Borobudour/
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

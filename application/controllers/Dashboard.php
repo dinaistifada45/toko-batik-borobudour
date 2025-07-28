@@ -2,6 +2,16 @@
 
 class Dashboard extends CI_Controller 
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('model_barang');
+        $this->load->model('model_invoice');
+        $this->load->library('cart');
+        $this->load->helper('url');
+        $this->load->helper('form');
+    }
+
     public function index()
     {
         $data['barang'] = $this->model_barang->tampil_data()->result();
@@ -14,9 +24,9 @@ class Dashboard extends CI_Controller
     public function tambah_ke_keranjang($id)
     {
         if (!$this->session->userdata('username')) {
-        // Belum login, redirect ke login
-        redirect('auth/login');
-    }
+            redirect('auth/login');
+        }
+
         $barang = $this->model_barang->find($id);
         $data = array(
             'id'    => $barang->id_brg,
@@ -39,7 +49,7 @@ class Dashboard extends CI_Controller
 
     public function hapus_keranjang()
     {
-        $this->cart->destroy(); // Bukan "destory"
+        $this->cart->destroy();
         redirect('dashboard/index');
     }
 
@@ -51,20 +61,18 @@ class Dashboard extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function proses_pesanan()
-    {
-        $is_processed = $this->model_invoice->index();
+   public function proses_pesanan()
+{
+    $id_invoice = $this->model_invoice->index(); // terima id_invoice dari model
 
-        if ($is_processed) {
-            $this->cart->destroy();
-            $this->load->view('templates/header');
-            $this->load->view('templates/sidebar');
-            $this->load->view('proses_pesanan');
-            $this->load->view('templates/footer');
-        } else {
-            echo "Maaf, pesanan Anda gagal diproses!";
-        }
+    if ($id_invoice) {
+        $this->cart->destroy(); // kosongkan keranjang
+        redirect('dashboard/invoice/' . $id_invoice); // arahkan ke halaman invoice
+    } else {
+        echo "Maaf, pesanan Anda gagal diproses!";
     }
+}
+
 
     public function detail($id_brg)
     {
@@ -72,6 +80,38 @@ class Dashboard extends CI_Controller
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
         $this->load->view('detail_barang', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function upload_bukti()
+    {
+        $invoice_id = $this->input->post('invoice_id');
+        $config['upload_path']   = './uploads/';
+        $config['allowed_types'] = 'jpg|jpeg|png';
+        $config['max_size']      = 2048;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('bukti')) {
+            $this->session->set_flashdata('upload_error', $this->upload->display_errors());
+        } else {
+            $upload_data = $this->upload->data();
+            $file_name = $upload_data['file_name'];
+
+            $this->model_invoice->update_bukti($invoice_id, $file_name);
+            $this->session->set_flashdata('upload_success', 'Bukti pembayaran berhasil diupload.');
+        }
+
+        redirect('dashboard/invoice/' . $invoice_id);
+    }
+
+    public function invoice($id_invoice)
+    {
+        $data['invoice'] = $this->model_invoice->ambil_id_invoice($id_invoice);
+        $data['pesanan'] = $this->model_invoice->ambil_id_pesanan($id_invoice);
+        $this->load->view('templates/header');
+        $this->load->view('templates/sidebar');
+        $this->load->view('invoice', $data);
         $this->load->view('templates/footer');
     }
 }
