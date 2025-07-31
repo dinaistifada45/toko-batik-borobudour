@@ -14,30 +14,35 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($invoice as $inv): ?>
-            <tr>
-                <td><?= $inv->id ?></td>
-                <td><?= $inv->nama ?></td>
-                <td><?= $inv->alamat ?></td>
-                <td><?= $inv->tgl_pesan ?></td>
-                <td><?= $inv->batas_bayar ?></td>
-                <td>
-                    <?php if ($inv->bukti_pembayaran): ?>
-                        <a href="<?= base_url('uploads/bukti/' . $inv->bukti_pembayaran); ?>" target="_blank">Lihat</a>
-                    <?php else: ?>
-                        <span class="text-danger">Belum Diupload</span>
-                    <?php endif; ?>
-                </td>
-                <td>
-                    <a href="<?= base_url('admin/invoice/detail/' . $inv->id); ?>" class="btn btn-sm btn-primary">Detail</a>
+            <?php if ($invoice): ?>
+                <?php foreach ($invoice as $inv): ?>
+                    <tr>
+                        <td><?= $inv->id ?></td>
+                        <td><?= $inv->nama ?></td>
+                        <td><?= $inv->alamat ?></td>
+                        <td><?= $inv->tgl_pesan ?></td>
+                        <td><?= $inv->batas_bayar ?></td>
+                        <td>
+                            <?php if ($inv->bukti_pembayaran): ?>
+                                <a href="<?= base_url('uploads/bukti/' . $inv->bukti_pembayaran); ?>" target="_blank">Lihat</a>
+                            <?php else: ?>
+                                <span class="text-danger">Belum Diupload</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <a href="<?= base_url('admin/invoice/detail/' . $inv->id); ?>" class="btn btn-sm btn-primary">Detail</a>
 
-                    <?php if ($inv->bukti_pembayaran): ?>
-                        <!-- Tombol Konfirmasi -->
-                        <a href="<?= base_url('admin/invoice/konfirmasi/' . $inv->id); ?>" class="btn btn-sm btn-success">Konfirmasi</a>
-                    <?php endif; ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
+                            <?php if ($inv->bukti_pembayaran): ?>
+                                <a href="<?= base_url('admin/invoice/konfirmasi/' . $inv->id); ?>" class="btn btn-sm btn-success">Konfirmasi</a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="7" class="text-center">Belum ada invoice yang masuk.</td>
+                </tr>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
