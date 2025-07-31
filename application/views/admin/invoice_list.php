@@ -1,50 +1,48 @@
-<div class="container mt-4">
-    <h3>Daftar Invoice</h3>
+<div class="container-fluid">
+    <h4>Daftar Invoice</h4>
 
-    <?php if ($this->session->flashdata('success')) : ?>
-        <div class="alert alert-success"><?= $this->session->flashdata('success') ?></div>
-    <?php endif; ?>
-
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-hover table-striped">
         <thead>
             <tr>
-                <th>Nama</th>
-                <th>Bukti</th>
-                <th>Status Bayar</th>
-                <th>Status Kirim</th>
+                <th>ID Invoice</th>
+                <th>Nama Pemesan</th>
+                <th>Alamat</th>
+                <th>Tanggal Pemesanan</th>
+                <th>Batas Bayar</th>
+                <th>Bukti Pembayaran</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($invoice as $inv) : ?>
+            <?php if ($invoice): ?>
+                <?php foreach ($invoice as $inv): ?>
+                    <tr>
+                        <td><?= $inv->id ?></td>
+                        <td><?= $inv->nama ?></td>
+                        <td><?= $inv->alamat ?></td>
+                        <td><?= $inv->tgl_pesan ?></td>
+                        <td><?= $inv->batas_bayar ?></td>
+                        <td>
+                            <?php if ($inv->bukti_pembayaran): ?>
+                                <a href="<?= base_url('uploads/bukti/' . $inv->bukti_pembayaran); ?>" target="_blank">Lihat</a>
+                            <?php else: ?>
+                                <span class="text-danger">Belum Diupload</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <a href="<?= base_url('admin/invoice/detail/' . $inv->id); ?>" class="btn btn-sm btn-primary">Detail</a>
+
+                            <?php if ($inv->bukti_pembayaran): ?>
+                                <a href="<?= base_url('admin/invoice/konfirmasi/' . $inv->id); ?>" class="btn btn-sm btn-success">Konfirmasi</a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
                 <tr>
-                    <td><?= $inv->nama ?></td>
-                    <td>
-                        <?php if ($inv->bukti_pembayaran) : ?>
-                            <img src="<?= base_url('uploads/' . $inv->bukti_pembayaran) ?>" width="100">
-                        <?php else : ?>
-                            <span class="text-danger">Belum Upload</span>
-                        <?php endif; ?>
-                    </td>
-                    <td><?= $inv->status_pembayaran ?? 'Menunggu Konfirmasi' ?></td>
-                    <td>
-                        <form method="post" action="<?= base_url('admin/invoice/ubah_status/' . $inv->id) ?>">
-                            <select name="status_pengiriman" class="form-control">
-                                <option <?= $inv->status_pengiriman == 'Belum Dikirim' ? 'selected' : '' ?>>Belum Dikirim</option>
-                                <option <?= $inv->status_pengiriman == 'Sudah Dikirim' ? 'selected' : '' ?>>Sudah Dikirim</option>
-                            </select>
-                            <button type="submit" class="btn btn-sm btn-primary mt-1">Update</button>
-                        </form>
-                    </td>
-                    <td>
-                        <?php if ($inv->bukti_pembayaran && $inv->status_pembayaran != 'Dikonfirmasi') : ?>
-                            <a href="<?= base_url('admin/invoice/konfirmasi/' . $inv->id) ?>" class="btn btn-sm btn-success">Konfirmasi</a>
-                        <?php else : ?>
-                            <span class="badge badge-success">OK</span>
-                        <?php endif; ?>
-                    </td>
+                    <td colspan="7" class="text-center">Belum ada invoice yang masuk.</td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>

@@ -66,27 +66,25 @@ public function proses_pesanan()
     $id_invoice = $this->model_invoice->index();
 
     if ($id_invoice) {
+        $data['invoice'] = $this->model_invoice->ambil_id_invoice($id_invoice);
         $this->cart->destroy();
-
-        // Kirim data id_invoice ke view
-        $data['invoice_id'] = $id_invoice;
 
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
-        $this->load->view('proses_pesanan', $data); // ✅ kirim data ke view
+        $this->load->view('proses_pesanan', $data);
         $this->load->view('templates/footer');
     } else {
         echo "Maaf, pesanan Anda gagal diproses!";
     }
 }
 
+
 public function upload_bukti()
 {
     $invoice_id = $this->input->post('invoice_id');
-    
+
     if (!$invoice_id) {
         show_error("ID invoice tidak ditemukan!", 404);
-        return;
     }
 
     $config['upload_path']   = './uploads/';
@@ -105,9 +103,9 @@ public function upload_bukti()
         $this->session->set_flashdata('upload_success', 'Bukti pembayaran berhasil diupload.');
     }
 
-    // ✅ redirect ke detail invoice
     redirect('dashboard/invoice/' . $invoice_id);
 }
+
 
 
 

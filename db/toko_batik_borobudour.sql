@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 29, 2025 at 03:32 PM
+-- Generation Time: Jul 31, 2025 at 03:51 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -70,58 +70,18 @@ INSERT INTO `tb_barang` (`id_brg`, `nama_brg`, `keterangan`, `kategori`, `harga`
 
 CREATE TABLE `tb_invoice` (
   `id` int(11) NOT NULL,
-  `nama` varchar(56) NOT NULL,
-  `alamat` varchar(255) NOT NULL,
-  `no_telp` varchar(20) DEFAULT NULL,
-  `jasa_pengiriman` varchar(50) DEFAULT NULL,
-  `bank` varchar(50) DEFAULT NULL,
+  `nama` varchar(100) NOT NULL,
+  `alamat` text NOT NULL,
+  `no_telp` varchar(20) NOT NULL,
+  `jasa_pengiriman` varchar(50) NOT NULL,
+  `bank` varchar(50) NOT NULL,
   `tgl_pesan` datetime NOT NULL,
   `batas_bayar` datetime NOT NULL,
   `bukti_pembayaran` varchar(255) DEFAULT NULL,
-  `status_pembayaran` varchar(50) DEFAULT 'Menunggu Konfirmasi',
-  `status_pengiriman` varchar(50) DEFAULT 'Belum Dikirim'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tb_invoice`
---
-
-INSERT INTO `tb_invoice` (`id`, `nama`, `alamat`, `no_telp`, `jasa_pengiriman`, `bank`, `tgl_pesan`, `batas_bayar`, `bukti_pembayaran`, `status_pembayaran`, `status_pengiriman`) VALUES
-(1, 'Dina Istifada', 'wonopringgo', NULL, NULL, NULL, '2025-07-03 23:14:44', '2025-07-04 23:14:44', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(2, 'Dina Istifada', 'wonopringgo', NULL, NULL, NULL, '2025-07-04 13:16:43', '2025-07-05 13:16:43', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(3, '', '', NULL, NULL, NULL, '2025-07-07 10:46:29', '2025-07-08 10:46:29', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(4, 'Al moh', 'kedungwuni', NULL, NULL, NULL, '2025-07-18 13:42:19', '2025-07-19 13:42:19', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(5, '', '', NULL, NULL, NULL, '2025-07-23 17:23:43', '2025-07-24 17:23:43', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(6, '', '', NULL, NULL, NULL, '2025-07-23 17:25:31', '2025-07-24 17:25:31', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(7, 'pppp', '', NULL, NULL, NULL, '2025-07-28 22:45:17', '2025-07-29 22:45:17', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(8, '', '', NULL, NULL, NULL, '2025-07-28 22:47:45', '2025-07-29 22:47:45', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(9, '', '', NULL, NULL, NULL, '2025-07-28 22:59:44', '2025-07-29 22:59:44', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(10, '', '', NULL, NULL, NULL, '2025-07-28 23:13:56', '2025-07-29 23:13:56', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(11, '', '', NULL, NULL, NULL, '2025-07-28 23:15:33', '2025-07-29 23:15:33', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(12, '', '', NULL, NULL, NULL, '2025-07-28 23:15:48', '2025-07-29 23:15:48', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(13, '', '', NULL, NULL, NULL, '2025-07-28 23:23:27', '2025-07-29 23:23:27', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(14, 'kjjg', 'kgg', NULL, NULL, NULL, '2025-07-28 23:31:50', '2025-07-29 23:31:50', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(15, '', '', NULL, NULL, NULL, '2025-07-29 00:40:34', '2025-07-30 00:40:34', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(16, '', '', '', 'JNE', 'BCA', '2025-07-29 01:18:11', '2025-07-30 01:18:11', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(17, '', '', '', 'JNE', 'BCA', '2025-07-29 01:18:32', '2025-07-30 01:18:32', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(18, '', '', '', 'JNE', 'BCA', '2025-07-29 01:36:26', '2025-07-30 01:36:26', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(19, '', '', '', 'JNE', 'BCA', '2025-07-29 01:38:47', '2025-07-30 01:38:47', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(20, '', '', '', 'JNE', 'BCA', '2025-07-29 01:40:46', '2025-07-30 01:40:46', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(21, '', '', '', 'JNE', 'BCA', '2025-07-29 01:47:26', '2025-07-30 01:47:26', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(22, '', '', '', 'JNE', 'BCA', '2025-07-29 01:47:53', '2025-07-30 01:47:53', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(23, '', '', '', 'JNE', 'BCA', '2025-07-29 01:50:29', '2025-07-30 01:50:29', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(24, '', '', '', 'JNE', 'BCA', '2025-07-29 01:53:00', '2025-07-30 01:53:00', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(25, '', '', '', 'JNE', 'BCA', '2025-07-29 01:53:29', '2025-07-30 01:53:29', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(26, '', '', '', 'JNE', 'BCA', '2025-07-29 01:58:13', '2025-07-30 01:58:13', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(27, '', '', '', 'JNE', 'BCA', '2025-07-29 01:58:28', '2025-07-30 01:58:28', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(28, '', '', '', 'JNE', 'BCA', '2025-07-29 01:58:43', '2025-07-30 01:58:43', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(29, '', '', '', 'JNE', 'BCA', '2025-07-29 02:13:31', '2025-07-30 02:13:31', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(30, '', '', '', 'JNE', 'BCA', '2025-07-29 02:19:37', '2025-07-30 02:19:37', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(31, '', '', '', 'JNE', 'BCA', '2025-07-29 02:23:43', '2025-07-30 02:23:43', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(32, '', '', '', 'JNE', 'BCA', '2025-07-29 02:27:01', '2025-07-30 02:27:01', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(33, '', '', '', 'JNE', 'BCA', '2025-07-29 02:28:25', '2025-07-30 02:28:25', NULL, 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(34, '', '', '', 'JNE', 'BCA', '2025-07-29 02:32:54', '2025-07-30 02:32:54', 'Screenshot_(73)10.png', 'Menunggu Konfirmasi', 'Belum Dikirim'),
-(35, '', '', '', 'JNE', 'BCA', '2025-07-29 02:35:18', '2025-07-30 02:35:18', 'Screenshot_(73)11.png', 'Menunggu Konfirmasi', 'Belum Dikirim');
+  `status_pengiriman` varchar(50) DEFAULT 'Belum Dikirim',
+  `status_konfirmasi` varchar(50) DEFAULT 'Belum Dikonfirmasi',
+  `status_pembayaran` varchar(50) DEFAULT 'Belum Dikonfirmasi'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -163,7 +123,15 @@ INSERT INTO `tb_pesanan` (`id`, `id_invoice`, `id_brg`, `nama_brg`, `jumlah`, `h
 (17, 26, 1, 'kemeja', 1, 80000, ''),
 (18, 31, 1, 'kemeja', 1, 80000, ''),
 (19, 32, 2, 'kemeja', 1, 85000, ''),
-(20, 35, 2, 'kemeja', 1, 85000, '');
+(20, 35, 2, 'kemeja', 1, 85000, ''),
+(21, 36, 1, 'kemeja', 1, 80000, ''),
+(22, 1, 1, 'kemeja', 1, 80000, ''),
+(23, 4, 1, 'kemeja', 1, 80000, ''),
+(24, 7, 1, 'kemeja', 1, 80000, ''),
+(25, 8, 1, 'kemeja', 1, 80000, ''),
+(26, 9, 1, 'kemeja', 1, 80000, ''),
+(27, 10, 1, 'kemeja', 1, 80000, ''),
+(28, 11, 1, 'kemeja', 1, 80000, '');
 
 -- --------------------------------------------------------
 
@@ -231,13 +199,13 @@ ALTER TABLE `tb_barang`
 -- AUTO_INCREMENT for table `tb_invoice`
 --
 ALTER TABLE `tb_invoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_pesanan`
 --
 ALTER TABLE `tb_pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
