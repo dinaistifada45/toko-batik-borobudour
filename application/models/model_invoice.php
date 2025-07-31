@@ -6,37 +6,29 @@ class Model_invoice extends CI_Model
     {
         date_default_timezone_set('Asia/Jakarta');
 
-        $nama    = $this->input->post('nama');
-        $alamat  = $this->input->post('alamat');
-        $no_telp = $this->input->post('no_telp');
-        $jasa    = $this->input->post('jasa_pengiriman');
-        $bank    = $this->input->post('bank');
+        $data = [
+            'nama'               => $this->input->post('nama'),
+            'alamat'             => $this->input->post('alamat'),
+            'no_telp'            => $this->input->post('no_telp'),
+            'jasa_pengiriman'    => $this->input->post('jasa_pengiriman'),
+            'bank'               => $this->input->post('bank'),
+            'tgl_pesan'          => date('Y-m-d H:i:s'),
+            'batas_bayar'        => date('Y-m-d H:i:s', strtotime('+1 day')),
+            'status_pengiriman'  => 'Belum Dikirim',
+            'status_pembayaran'  => 'Belum Dikonfirmasi'
+        ];
 
-        $tgl_pesan   = date('Y-m-d H:i:s');
-        $batas_bayar = date('Y-m-d H:i:s', strtotime('+1 day'));
-
-        $invoice = array(
-            'nama'           => $nama,
-            'alamat'         => $alamat,
-            'no_telp'        => $no_telp,
-            'jasa_pengiriman'=> $jasa,
-            'bank'           => $bank,
-            'tgl_pesan'      => $tgl_pesan,
-            'batas_bayar'    => $batas_bayar
-        );
-
-        $this->db->insert('tb_invoice', $invoice);
+        $this->db->insert('tb_invoice', $data);
         $id_invoice = $this->db->insert_id();
 
         foreach ($this->cart->contents() as $item) {
-            $data = array(
+            $this->db->insert('tb_pesanan', [
                 'id_invoice' => $id_invoice,
                 'id_brg'     => $item['id'],
                 'nama_brg'   => $item['name'],
                 'jumlah'     => $item['qty'],
                 'harga'      => $item['price'],
-            );
-            $this->db->insert('tb_pesanan', $data);
+            ]);
         }
 
         return $id_invoice;
@@ -50,14 +42,12 @@ class Model_invoice extends CI_Model
 
     public function ambil_id_invoice($id_invoice)
     {
-        $result = $this->db->where('id', $id_invoice)->limit(1)->get('tb_invoice');
-        return $result->num_rows() > 0 ? $result->row() : false;
+        return $this->db->where('id', $id_invoice)->get('tb_invoice')->row();
     }
 
     public function ambil_id_pesanan($id_invoice)
     {
-        $result = $this->db->where('id_invoice', $id_invoice)->get('tb_pesanan');
-        return $result->num_rows() > 0 ? $result->result() : false;
+        return $this->db->where('id_invoice', $id_invoice)->get('tb_pesanan')->result();
     }
 
     public function update_bukti($id_invoice, $file_name)
@@ -67,15 +57,14 @@ class Model_invoice extends CI_Model
     }
 
     public function konfirmasi_pembayaran($id_invoice)
-{
-    $this->db->where('id', $id_invoice);
-    $this->db->update('tb_invoice', ['status_pembayaran' => 'Dikonfirmasi']);
-}
+    {
+        $this->db->where('id', $id_invoice);
+        $this->db->update('tb_invoice', ['status_pembayaran' => 'Dikonfirmasi']);
+    }
 
-public function ubah_status_pengiriman($id_invoice, $status)
-{
-    $this->db->where('id', $id_invoice);
-    $this->db->update('tb_invoice', ['status_pengiriman' => $status]);
-}
-
+    public function ubah_status_pengiriman($id_invoice, $status)
+    {
+        $this->db->where('id', $id_invoice);
+        $this->db->update('tb_invoice', ['status_pengiriman' => $status]);
+    }
 }
