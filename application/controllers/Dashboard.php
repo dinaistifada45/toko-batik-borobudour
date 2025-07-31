@@ -87,7 +87,7 @@ public function upload_bukti()
         show_error("ID invoice tidak ditemukan!", 404);
     }
 
-    $config['upload_path']   = './uploads/';
+    $config['upload_path']   = './uploads/bukti';
     $config['allowed_types'] = 'jpg|jpeg|png';
     $config['max_size']      = 2048;
 
