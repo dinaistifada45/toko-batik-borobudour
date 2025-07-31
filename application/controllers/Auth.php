@@ -38,9 +38,9 @@ class Auth extends CI_Controller {
                         case 2:
                             redirect('dashboard');
                             break;
-                        default:
-                            redirect('auth/login');
-                            break;
+                        // default:
+                        //     redirect('auth/login');
+                        //     break;
                     }
                 } else {
                     // Password tidak cocok
